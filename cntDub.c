@@ -22,7 +22,7 @@ int find_maxcount(int arrayCount[],int nEle){
   return max_value;
 }
 
-int maitasdn(void){
+int main(void){
   int rounds;
   scanf("%d\n",&rounds);
   int arrayNum[rounds];
