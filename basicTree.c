@@ -161,18 +161,23 @@ void bfs(tree_t *t) {
   printf("\n");
 }
 
-void dfs(tree_t *t) {
+void dfs_rec(tree_t *t) {
   if (t == NULL) {
     return;
   }
   printf("%d ", t->value);
-  dfs(t->first_child);
-  dfs(t->next_sibling);
+  dfs_rec(t->first_child);
+  dfs_rec(t->next_sibling);
   return;
 }
 
+void dfs(tree_t *t) {
+  dfs_rec(t);
+  printf("\n");
+  return;
+}
 
-int depth(tree_t *t, int k) {
+int depth_rec(tree_t *t, int k) {
   if (t == NULL) {
     return 0;
   }
@@ -180,8 +185,8 @@ int depth(tree_t *t, int k) {
     // printf("Found!! %d\n",k);
     return 1;
   }
-  int k1 = depth(t->first_child, k);
-  int k2 = depth(t->next_sibling, k);
+  int k1 = depth_rec(t->first_child, k);
+  int k2 = depth_rec(t->next_sibling, k);
   if (k1 != 0) {
     // printf("\nPath to 1 !! %d\n",t->value);
     return 1 + k1;
@@ -190,6 +195,11 @@ int depth(tree_t *t, int k) {
     // printf("\nPath to 0 !! %d\n",t->value);
     return 0 + k2;
   }
+}
+
+int depth(tree_t *t, int k) {
+  int res = depth_rec(t,k) - 1;
+  return res;
 }
 
 stack_t *stack_path(tree_t *t, stack_t *path, int k) {
@@ -298,7 +308,7 @@ tree_t *detach(tree_t *t, int k) {
   return t;
 }
 
-int path_length(tree_t *t, int start, int end) {
+int path_length_rec(tree_t *t, int start, int end) {
   tree_t *s = search_pos(t, start);
   stack_t *stack_p = NULL;
   stack_p = stack_path(s->first_child, stack_p, end);
@@ -309,6 +319,11 @@ int path_length(tree_t *t, int start, int end) {
     stack_p = stack_p->next;
   }
   return n;
+}
+
+int path_length(tree_t *t, int start, int end) {
+  int res = path_length_rec(t, start,end) +1;
+  return res;
 }
 
 void descendant(tree_t *t, int k) {
@@ -327,17 +342,22 @@ int degree(tree_t *t, int k) {
   return n;
 }
 
-void print_tree(tree_t *t,int n) {
+
+void print_tree_rec(tree_t *t, int n) {
   if (t == NULL) {
     return;
   }
-  for(int i = 0 ; i < 4*n ; i++){
+  for (int i = 0; i < 4 * n; i++) {
     printf(" ");
   }
   printf("%d\n", t->value);
-  print_tree(t->first_child,n+1);
-  print_tree(t->next_sibling,n);
+  print_tree_rec(t->first_child, n + 1);
+  print_tree_rec(t->next_sibling, n);
   return;
+}
+
+void print_tree(tree_t *t){
+  print_tree_rec(t,0);
 }
 
 int main(void) {
@@ -378,7 +398,7 @@ int main(void) {
       break;
     case 8:
       scanf("%d", &node);
-      printf("%d\n", depth(t, node) - 1);
+      printf("%d\n", depth(t, node));
       break;
     case 9:
       scanf("%d %d", &start, &end);
@@ -386,7 +406,7 @@ int main(void) {
       break;
     case 10:
       scanf("%d %d", &start, &end);
-      printf("%d\n", path_length(t, start, end)+1);
+      printf("%d\n", path_length(t, start, end));
       break;
     case 11:
       scanf("%d", &node);
@@ -401,16 +421,14 @@ int main(void) {
       break;
     case 14:
       dfs(t);
-      printf("\n");
       break;
     case 15:
-      print_tree(t,0);
+      print_tree(t);
       break;
     }
   }
   return 0;
 }
-
 // 10
 // 1 -1 1
 // 1 1 2
