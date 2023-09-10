@@ -11,46 +11,10 @@ typedef struct node {
 typedef node_t tree_t;
 #endif
 
-typedef struct node2 {
-  tree_t *tree;
-  struct node2 *next;
-} node2_t;
-typedef node2_t queue_t;
-
-queue_t *pop(queue_t *s) {
-  if (s == NULL) {
-    return NULL;
-  }
-  queue_t *tmp = s;
-  s = s->next;
-  free(tmp);
-  return s;
-}
-
-void print_queue(queue_t *s){
-  while(s!=NULL){
-    printf("%d ",s->tree->data);
-    s=s->next;
-  }
-}
-
-queue_t *enqueue(queue_t *s, tree_t *t) {
-  queue_t *new_node = NULL;
-  new_node = (queue_t *)malloc(sizeof(queue_t));
-  new_node->tree = t;
-  new_node->next = NULL;
-  if (s == NULL) {
-    return new_node;
-  }
-  queue_t *run = s;
-  while (run->next != NULL) {
-    run = run->next;
-  }
-  run->next = new_node;
-  return s;
-}
-
 int is_full(tree_t *t) {
+  if(t==NULL){
+    return 1;
+  }
   if (t->left == NULL && t->right == NULL) {
     return 1;
   }
@@ -72,8 +36,6 @@ int depth(tree_t *t) {
   return d_r + 1;
 }
 
-
-
 int size_tree(tree_t *t) {
   if (t == NULL) {
     return 1;
@@ -90,6 +52,9 @@ int size_tree(tree_t *t) {
 }
 
 int is_perfect(tree_t *t) {
+  if(t==NULL){
+    return 1;
+  }
   if (t->left == NULL && t->right == NULL) {
     return 1;
   }
@@ -154,6 +119,34 @@ int is_degenerate(tree_t *t) {
   return is_degenerate(t->left) && is_degenerate(t->right);
 }
 
+int is_complete(tree_t *t) {
+  if (t == NULL) {
+    return 1;
+  }
+  if(is_perfect(t)){
+    return 1;
+  }
+  tree_t *l_tree = t->left;
+  tree_t *r_tree = t->right;
+  if (depth(l_tree) - 1 == depth(r_tree)) {
+    if (is_complete(l_tree) && is_perfect(r_tree)) {
+      return 1;
+    }
+    return 0;
+  }
+  //depth(l_tree) == depth(r_tree)
+  if (depth(l_tree) == depth(r_tree)) {
+    if (is_perfect(l_tree) && is_complete(r_tree)) {
+      return 1;
+    }
+    if(t->left != NULL && t->right == NULL){
+      return 1;
+    }
+    return 0;
+  }
+  return 0;
+}
+
 int main(void) {
   tree_t *t = NULL;
   int n, i;
@@ -168,16 +161,3 @@ int main(void) {
          is_degenerate(t), is_skewed(t));
   return 0;
 }
-
-
-// 6
-// -1 1 0
-// 1 2 1
-// 1 3 2
-// 2 4 1
-// 2 5 2
-// 3 6 1
-// 3 7 2
-// 4 8 1
-// 4 9 2
-// 5 10 2
