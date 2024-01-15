@@ -16,8 +16,10 @@ void print_graph(int numCourses) {
 }
 
 bool iscycle(list<int> &que,int numCourses){
+    int count = 0;
     while(!que.empty()){
         int nnode = que.size();
+        count+=nnode;
         for(int i = 0 ; i < nnode ; i++){
             int pos = que.front();
             que.pop_front();
@@ -30,12 +32,10 @@ bool iscycle(list<int> &que,int numCourses){
             }
         }
     }
-    for(int i = 0 ; i < numCourses ; i++){
-        if(visited[i] == 0){
-            return true;
-        }
+    if(count == numCourses){
+        return false;
     }
-    return false;
+    return true;
 }
 
 class Solution {
