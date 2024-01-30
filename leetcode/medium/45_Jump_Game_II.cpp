@@ -10,14 +10,12 @@ public:
         }
         while (e < size - 1) {
             int max_jump = 0;
-            int tmp = 0;
             for (int i = s; i <= e; i++) {
                 if (i + nums[i] > max_jump) {
                     max_jump = i + nums[i];
-                    tmp = i;
                 }
+                s=i;
             }
-            s = tmp;
             e = max_jump;
             choose++;
         }
