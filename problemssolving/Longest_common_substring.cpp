@@ -61,4 +61,14 @@ int main() {
 /*
 AABBCDEF
 ABECEF
+output:
+5
+ABCEF
+
+
+AAABBBABCABC
+AABACABCEDF
+output:
+8
+AABACABC
 */
