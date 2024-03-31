@@ -10,13 +10,10 @@ int memo[MAX_N][MAX_N];
 
 
 int opt(int i, int j,int m,int n,vector<vector<int>> &v){
-  if(i>=m){
+  if(i==m){
     return 0;
   }
-  if(j >=n){
-    return MAX_NUM;
-  }
-  if(j<0){
+  if(j >=n || j < 0){
     return MAX_NUM;
   }
   if(memo[i][j] != -1){
