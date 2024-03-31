@@ -1,15 +1,15 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <cstring>
 #include <algorithm>
 using namespace std;
 #define MAX_NUM 1100000 
 #define MAX_N 550
-map<pair<int,int>,int> table;
-vector<vector<int>> v(MAX_N,vector<int> (MAX_N));
+int memo[MAX_N][MAX_N];
 
 
-int opt(int i, int j,int m,int n){
+int opt(int i, int j,int m,int n,vector<vector<int>> &v){
   if(i>=m){
     return 0;
   }
@@ -19,20 +19,21 @@ int opt(int i, int j,int m,int n){
   if(j<0){
     return MAX_NUM;
   }
-  if(table.find({i,j}) != table.end()){
-    return table[{i,j}];
+  if(memo[i][j] != -1){
+    return memo[i][j];
   }
   int result = MAX_NUM;
   for(int k = j-1 ; k < j+2 ; k++){
-    result = min(result,v[i][j]+opt(i+1,k,m,n));
+    result = min(result,v[i][j]+opt(i+1,k,m,n,v));
   }
-  table[{i,j}] = result;
+  memo[i][j] = result;
   return result; 
 }
 
 int main() {
   int t;
   cin >> t;
+  vector<vector<int>> v(MAX_N,vector<int> (MAX_N));
   for(int k = 0 ; k < t ; k++){
     int m,n;
     cin >> m >> n;
@@ -43,11 +44,11 @@ int main() {
         v[i][j] = x;
       }
     }
+    memset(memo,-1,sizeof(memo));
     int ans = MAX_NUM;
     for(int j = 0 ; j < n ; j++){
-      ans = min(ans,opt(0,j,m,n));
+      ans = min(ans,opt(0,j,m,n,v));
     }
-    table.clear();
     cout << ans << endl;
   }
 }
@@ -76,10 +77,5 @@ int main() {
 6 3 3 6 6 2 6 3 9 4 
 5 1 1 1 1 3 4 1 3 6
 1 1
-1000000
-
-output:
-20
-19
 1000000
 */
