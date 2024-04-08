@@ -1,0 +1,2 @@
+## Objective
+This Github repo contain my code assignments in course 01204214 and 01204212 so people who see this Github repo shouldn't copy my code for send code to your own assignments for good training learn to code you should read problem -> try to write -> debug if you still cant debug -> search for problem try to find good code and read it if you still cant solve -> try to read my code and see what diffrence between my code and yours.
