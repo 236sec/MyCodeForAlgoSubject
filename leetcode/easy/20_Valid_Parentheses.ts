@@ -20,5 +20,3 @@ function isValid(s: string): boolean {
   }
   return true;
 }
-
-console.log(isValid("()"));
